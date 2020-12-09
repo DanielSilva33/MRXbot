@@ -26,7 +26,7 @@ namespace MRXbot
             _services = new ServiceCollection().AddSingleton(_client).AddSingleton(_commands).BuildServiceProvider();
 
             //Responsavel pelo token do seu bot.
-            string tokenBot = "Nzg2MDMzNjc4NzA2NDA5NDcy.X9Ag6A.W0fI2kULJyGxynPvd9D5npEJj-c";
+            string tokenBot = "Token bot";
 
             _client.Ready += Client_Ready;
             _client.Log += ClientLog;
