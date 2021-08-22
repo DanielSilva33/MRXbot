@@ -3,12 +3,12 @@ const dotenv = require("dotenv");
 const ytdl = require("ytdl-core");
 const google = require("googleapis");
 const fs = require("fs");
-//const config = require("./config.json");
-const commands = require("./scripts/commandsReader")(process.env.prefix);
+const config = require("./config.json");
+const commands = require("./scripts/commandsReader")(config.prefix);
 
 const youtube = new google.youtube_v3.Youtube({
     version: 'v3',
-    auth: process.env.googleToken
+    auth: config.googleToken
 });
 
 const client = new Discord.Client();
@@ -47,11 +47,11 @@ client.on("message", async (msg) => {
         };
     }
     if (!msg.guild) return;
-    if (!msg.content.startsWith(process.env.prefix)) return;
+    if (!msg.content.startsWith(config.prefix)) return;
 
     //!join
 
-    if (msg.content === process.env.prefix + 'join') {
+    if (msg.content === config.prefix + 'join') {
         try {
             if (msg.member.voice.channel) {
                 servers[msg.guild.id].connection = await msg.member.voice.channel.join();
@@ -65,7 +65,7 @@ client.on("message", async (msg) => {
     };
 
     //!leave
-    if (msg.content === process.env.prefix + 'leave') {
+    if (msg.content === config.prefix + 'leave') {
         if (msg.member.voice.channel) {
             servers[msg.guild.id].connection = await msg.member.voice.channel.leave();
             servers[msg.guild.id].connection = null;
@@ -78,7 +78,7 @@ client.on("message", async (msg) => {
     };
 
     //!play
-    if (msg.content.startsWith(process.env.prefix + 'play')) {
+    if (msg.content.startsWith(config.prefix + 'play')) {
         if (msg.member.voice.channel) {
             let playMusic = msg.content.slice(6);
 
@@ -134,18 +134,47 @@ client.on("message", async (msg) => {
     };
 
     //!pause
-    if (msg.content === process.env.prefix + 'pause') {
+    if (msg.content === config.prefix + 'pause') {
         if (msg.member.voice.channel) {
-            servers[msg.guild.id].dispatcher.pause();
+            try {
+                servers[msg.guild.id].dispatcher.pause();
+            } catch { }
         } else {
             msg.reply('Você precisa estar conectado a um canal de voz!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
         }
     };
 
     //!resume
-    if (msg.content === process.env.prefix + 'resume') {
+    if (msg.content === config.prefix + 'resume') {
         if (msg.member.voice.channel) {
-            servers[msg.guild.id].dispatcher.resume();
+            try {
+                servers[msg.guild.id].dispatcher.resume();
+            } catch { }
+        } else {
+            msg.reply('Você precisa estar conectado a um canal de voz!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
+        }
+    };
+
+
+    //end = para de tocar todas as musicas e limpa a fila
+    if (msg.content === config.prefix + 'end') {
+        if (msg.member.voice.channel) {
+            try {
+                servers[msg.guild.id].dispatcher.end();
+            } catch { }
+        } else {
+            msg.reply('Você precisa estar conectado a um canal de voz!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
+        }
+    };
+
+    //skip = passa para a proxima musica 
+    if (msg.content === config.prefix + 'skip') {
+        if (msg.member.voice.channel) {
+            if (servers[msg.guild.id].fila.length > 1) {
+                servers[msg.guild.id].dispatcher.end();
+            } else {
+                msg.reply('Nenhuma musica em fila!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
+            }
         } else {
             msg.reply('Você precisa estar conectado a um canal de voz!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
         }
@@ -155,7 +184,7 @@ client.on("message", async (msg) => {
 
 //Bem vindo para novos membros 
 client.on("guildMemberAdd", async (member) => {
-    const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === process.env.welcomeChannelId);
+    const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === config.welcomeChannelId);
     //welcomeChannel.send(`O usuário ${member.user} acabou de entrar no servidor! :)`);
 
     let embed = new Discord.MessageEmbed()
@@ -232,4 +261,4 @@ const saveServer = (IdNewServer) => {
 }
 
 dotenv.config();
-client.login(process.env.token);
+client.login(config.token);

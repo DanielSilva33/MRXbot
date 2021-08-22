@@ -19,7 +19,10 @@ module.exports = async (msg) => {
         *Pausa a musica que está tocando.*
         
         **!resume**
-        *Continua tocando a musica pausada.*`)
+        *Continua tocando a musica pausada.*
+        
+        **!end**
+        *Para a musica que está tocando e limpa as musicas que estão em fila!*`)
         .setTimestamp();
     await msg.reply(embed);
 }
