@@ -102,7 +102,7 @@ client.on("message", async (msg) => {
 
             if (ytdl.validateURL(playMusic)) {
                 servers[msg.guild.id].fila.push(playMusic);
-                console.log("Na fila: ", playMusic);
+                //console.log("Na fila: ", playMusic);
                 playTheMusic(msg);
 
             } else {
@@ -120,7 +120,7 @@ client.on("message", async (msg) => {
                         const id = resultado.data.items[0].id.videoId;
                         playMusic = 'https://www.youtube.com/watch?v=' + id;
                         servers[msg.guild.id].fila.push(playMusic);
-                        console.log("Na fila: ", playMusic);
+                        //console.log("Na fila: ", playMusic);
                         playTheMusic(msg);
 
                     }
