@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const ytdl = require("ytdl-core");
 const google = require("googleapis");
 const fs = require("fs");
-const config = require("./config.json");
+//const config = require("./config.json");
 const commands = require("./scripts/commandsReader")(process.env.prefix);
 
 const youtube = new google.youtube_v3.Youtube({
