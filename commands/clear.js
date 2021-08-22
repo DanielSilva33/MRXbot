@@ -5,5 +5,5 @@ module.exports = async (msg) => {
 
     await channel.bulkDelete(fetchMessages);
 
-    msg.reply(`Deletou ${fetchMessages.size} mensagens`);
+    //msg.reply(`Deletou ${fetchMessages.size} mensagens`);
 }
