@@ -232,4 +232,4 @@ const saveServer = (IdNewServer) => {
 }
 
 dotenv.config();
-client.login(config);
+client.login(process.env.token);
