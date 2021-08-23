@@ -190,18 +190,18 @@ client.on("guildMemberAdd", async (member) => {
     const welcomeChannel = member.guild.channels.cache.find(channel => channel.id === config.welcomeChannelId);
     //welcomeChannel.send(`O usuário ${member.user} acabou de entrar no servidor! :)`);
 
-    let embed = new Discord.MessageEmbed()
+    let embed1 = new Discord.MessageEmbed()
         .setColor('#68F586')
         .setAuthor(member.user.tag, member.user.displayAvatarURL())
         .setTitle(`:space_invader: **Boas-vindas** :space_invader:`)
         .setImage('http://1.bp.blogspot.com/-8Hq5MSUIr-E/T-e2NQy5m6I/AAAAAAAACGA/TkyqcvVdNXI/s1600/meu+malvado+favorito-gifs+linda+lima+(5).gif')
         .setDescription(`${member.user}, Boas-vindas ao servidor The universe TI, respeite as regras e divirta-se!!`)
-        .addField('', '')
+        // .addField('', '')
         .setThumbnail(member.user.displayAvatarURL({ dynamic: true, format: "png", size: 1024 }))
         .setFooter('ID do usuário: ' + member.user.id)
         .setTimestamp();
-    await welcomeChannel.send(embed);
-    member.send(embed);
+    await welcomeChannel.send(embed1);
+    member.send(embed1);
 });
 
 //função para tocar a musica

@@ -20,6 +20,9 @@ module.exports = async (msg) => {
         
         **!resume**
         *Continua tocando a musica pausada.*
+
+        **!skip**
+        *Pula para a proxima musica na fila.
         
         **!end**
         *Para a musica que está tocando e limpa as musicas que estão em fila!*`)
