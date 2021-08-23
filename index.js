@@ -171,7 +171,10 @@ client.on("message", async (msg) => {
     if (msg.content === config.prefix + 'skip') {
         if (msg.member.voice.channel) {
             if (servers[msg.guild.id].fila.length > 1) {
-                servers[msg.guild.id].dispatcher.end();
+                servers[msg.guild.id].fila.shift();
+                servers[msg.guild.id].playing = false;
+                console.log(servers[msg.guild.id].fila);
+                playTheMusic(msg);
             } else {
                 msg.reply('Nenhuma musica em fila!').then(msg => msg.delete({ timeout: 7000 })).catch(a => { });
             }
