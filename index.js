@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const dotenv = require("dotenv");
 const ytdl = require("ytdl-core");
 const google = require("googleapis");
+const firebase = require("firebase");
 const fs = require("fs");
 const config = require("./config.json");
 const commands = require("./scripts/commandsReader")(config.prefix);
@@ -13,16 +14,31 @@ const youtube = new google.youtube_v3.Youtube({
 
 const client = new Discord.Client();
 
-const ytdlOptions = { filter: 'audioonly' };
+// Initialize Firebase
+var firebaseConfig = {
+    apiKey: config.keyF,
+    authDomain: config.authDomain,
+    projectId: "mrxbot",
+    storageBucket: "mrxbot.appspot.com",
+    messagingSenderId: config.messagingSenderId,
+    appId: config.appId
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
+const database = firebase.database();
+
+
+//Play music
+const ytdlOptions = { filter: 'audioonly' };
 const servers = {};
 
 
+//Recarregando os dados do bot caso seja desligado
 client.once("ready", () => {
     loadServers();
     console.log(`Bot ready: ${client.user.tag}!`);
 });
-
 
 // Multiplos servidores
 client.on("guildCreate", (guild) => {
@@ -37,6 +53,49 @@ client.on("guildCreate", (guild) => {
 
     saveServer(guild.id);
 });
+
+//levels up 
+client.on("message", async (msg) => {
+    if (msg.channel.type === 'dm') return;
+    if (msg.author.bot) return;
+
+    database.ref(`Servidores/Levels/${msg.guild.id}/${msg.author.id}`)
+        .once('value').then(async function (db) {
+            if (db.val() === null) {
+                database.ref(`Servidores/Levels/${msg.guild.id}/${msg.author.id}`)
+                    .set({
+                        xp: 0,
+                        level: 1
+                    })
+            } else {
+                let generateXP = Math.floor(Math.random() * 10) + 1;
+
+                if (db.val().level * 100 <= db.val().xp) {
+                    if (db.val().level + 1 === '5') {
+                        msg.member.addRole('879772742075949107');
+                    }
+                    database.ref(`Servidores/Levels/${msg.guild.id}/${msg.author.id}`)
+                        .update({
+                            xp: 0,
+                            level: db.val().level + 1
+                        });
+                    let embed = new Discord.MessageEmbed()
+                        .setColor('#68F586')
+                        //.setAuthor(member.user.tag, member.user.displayAvatarURL())
+                        .setTitle(`:space_invader: **Levels up** :space_invader:`)
+                        .setDescription(`Parabéns ${msg.author}, você upou para o level ${db.val().level + 1}!`)
+                        .setTimestamp();
+                    await msg.channel.send(embed);
+                } else {
+                    database.ref(`Servidores/Levels/${msg.guild.id}/${msg.author.id}`)
+                        .update({
+                            xp: db.val().xp + generateXP
+                        })
+                }
+            }
+        });
+})
+
 
 //evento que lida com os comandos
 client.on("message", async (msg) => {

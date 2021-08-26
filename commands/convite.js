@@ -6,7 +6,7 @@ module.exports = async (msg) => {
         .setColor('#68F586')
         .setTitle(`:space_invader: **Convite** :space_invader:`)
         .setDescription(`Link de convite para o nosso servidor:
-        https://discord.gg/SuwNxTZx`)
+        https://discord.gg/2XkCaSGYgP`)
         .setImage('http://25.media.tumblr.com/tumblr_lolhcftkij1qgcmwro1_500.gif')
         .setTimestamp();
     await msg.reply(embed);

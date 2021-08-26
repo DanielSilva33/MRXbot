@@ -11,6 +11,9 @@ module.exports = async (msg) => {
         
         **!dev** 
         *Github do desenvolvedor e criador do bot.*
+
+        **!bot**
+        *Link de convite para utilizar o bot MRX no seu servidor.*
         
         **!play LINK_DA_MUSICA**
         *Comando para ouvir musicas com o nosso bot.*
