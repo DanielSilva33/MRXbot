@@ -14,6 +14,9 @@ module.exports = async (msg) => {
 
         **!bot**
         *Link de convite para utilizar o bot MRX no seu servidor.*
+
+        **!tempo NOME_CIDADE**
+        *Retorna os dados climaticos da cidade!*
         
         **!play LINK_DA_MUSICA**
         *Comando para ouvir musicas com o nosso bot.*
